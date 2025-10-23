@@ -1,0 +1,43 @@
+name: minio-update
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron:  '00 12 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  minio-update:
+    name: update minio
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run minio-container-update
+      run: |
+        set -x
+
+        MINIO_VERSION="$(
+          git ls-remote https://github.com/minio/minio RELEASE* \
+            | cut -d/ -f3 \
+            | sort -V \
+            | grep -E "^RELEASE.*$" \
+            | tail -1
+        )"
+        sed -i "s|^ENV MINIO_VERSION.*$|ENV MINIO_VERSION=$MINIO_VERSION|" ./Dockerfile
+
+        cat ./Dockerfile
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        commit-message: minio-update automated change
+        signoff: true
+        title: minio container update
+        body: Automated minio container update
+        labels: dependencies, 3. to review
+        milestone: next
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: minio-container-update
