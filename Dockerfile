@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:latest
-FROM golang:1.25.3-alpine3.22 AS go
+FROM golang:1.25.4-alpine3.22 AS go
 
 ENV MINIO_VERSION=RELEASE.2025-10-15T17-29-55Z
 ENV GOPATH=/go
