@@ -13,7 +13,7 @@ RUN set -ex; \
         build-base; \
     go install github.com/minio/minio@$MINIO_VERSION;
 
-FROM alpine:3.23.4
+FROM alpine:3.24.1
 RUN set -ex; \
     apk upgrade --no-cache -a; \
     apk add --no-cache \
