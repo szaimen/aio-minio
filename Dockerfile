@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:latest
-FROM golang:1.26.4-alpine3.23 AS go
+FROM golang:1.26.4-alpine3.24 AS go
 
 ENV MINIO_VERSION=RELEASE.2025-10-15T17-29-55Z
 ENV GOPATH=/go
@@ -13,7 +13,7 @@ RUN set -ex; \
         build-base; \
     go install github.com/minio/minio@$MINIO_VERSION;
 
-FROM alpine:3.23.4
+FROM alpine:3.24.1
 RUN set -ex; \
     apk upgrade --no-cache -a; \
     apk add --no-cache \
